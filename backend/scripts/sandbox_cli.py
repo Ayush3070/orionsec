@@ -330,13 +330,33 @@ def formatHumanReport(report: dict) -> str:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="OrionSec sandbox threat scanner (hardcoded inputs).")
-    parser.add_argument("--json", action="store_true", help="Output JSON array instead of line-by-line objects.")
+    parser = argparse.ArgumentParser(description="OrionSec threat scanner")
+    parser.add_argument("--json", action="store_true", help="Output JSON instead of human-readable format.")
+    parser.add_argument("--file", "-f", type=str, help="Scan a specific file")
+    parser.add_argument("--logs", "-l", type=str, help="Scan log content directly")
+    parser.add_argument("--sandbox", "-s", action="store_true", help="Use hardcoded sandbox data (default)")
+    
     args = parser.parse_args()
 
     all_threats: list[Threat] = []
-    for filename, content in HARD_CODED_INPUTS.items():
-        all_threats.extend(scanFile(filename, content))
+    
+    if args.sandbox or (not args.file and not args.logs):
+        # Use hardcoded sandbox data (default behavior)
+        for filename, content in HARD_CODED_INPUTS.items():
+            all_threats.extend(scanFile(filename, content))
+    else:
+        # Process real input
+        if args.file:
+            try:
+                with open(args.file, 'r', encoding='utf-8', errors='ignore') as f:
+                    content = f.read()
+                all_threats.extend(scanFile(args.file, content))
+            except Exception as e:
+                print(f"Error reading file {args.file}: {e}")
+                return 1
+        
+        if args.logs:
+            all_threats.extend(scanFile("stdin.log", args.logs))
 
     print(generateReport(all_threats, as_json=bool(args.json)))
     return 0

@@ -1,5 +1,6 @@
 from collections import Counter
 from app.core.database import threat_collection
+from app.services.rule_engine import scan_content_with_rules, ThreatFinding
 
 def detect_threats_from_logs(log_ips):
     alerts = []
@@ -34,3 +35,20 @@ def detect_bruteforce(log_ips):
 
     ]
     return suspicious
+
+def scan_file_content(filename: str, content: str):
+    """Scan file content using rule-based engine"""
+    threats = scan_content_with_rules(filename, content)
+    
+    # Convert ThreatFinding objects to dictionaries
+    threat_dicts = []
+    for threat in threats:
+        threat_dicts.append({
+            "file": threat.file,
+            "issue": threat.issue,
+            "severity": threat.severity,
+            "line": threat.line,
+            "weight": threat.weight
+        })
+    
+    return threat_dicts

@@ -33,3 +33,100 @@ export async function scanInputs({ uploadedFiles, pastedLogs }) {
   return { threats: [], insights: [] };
 }
 
+export async function getThreatHistory(indicator, type) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/threats/history/${encodeURIComponent(indicator)}?type=${type}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      throw new Error(body || `Failed to fetch threat history (${res.status})`);
+    }
+
+    return await res.json();
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getThreats(filters = {}, limit = 100, skip = 0) {
+  try {
+    const queryParams = new URLSearchParams();
+    if (filters.severity) queryParams.append('severity', filters.severity);
+    if (filters.type) queryParams.append('type', filters.type);
+    queryParams.append('limit', limit.toString());
+    queryParams.append('skip', skip.toString());
+
+    const res = await fetch(`${API_BASE_URL}/threats?${queryParams.toString()}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      throw new Error(body || `Failed to fetch threats (${res.status})`);
+    }
+
+    return await res.json();
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getIntelHistory() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/intel/history`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      throw new Error(body || `Failed to fetch intel history (${res.status})`);
+    }
+
+    return await res.json();
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function postIntelScan(indicators) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/intel/scan`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ indicators }),
+    });
+
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      throw new Error(body || `Scan failed (${res.status})`);
+    }
+
+    return await res.json();
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getIntelHistory() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/intel/history`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      throw new Error(body || `Failed to fetch intel history (${res.status})`);
+    }
+
+    return await res.json();
+  } catch (error) {
+    throw error;
+  }
+}
+

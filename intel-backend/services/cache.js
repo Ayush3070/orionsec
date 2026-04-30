@@ -1,4 +1,5 @@
 import { getDb } from "../db.js";
+import { severityFromConfidence } from "./normalization.js";
 
 const memoryCache = new Map();
 
@@ -8,6 +9,24 @@ function nowMs() {
 
 function cacheKey(type, indicator) {
   return `${type}:${indicator}`;
+}
+
+/**
+ * Calculate TTL based on severity
+ * High severity threats get shorter TTL (more frequent updates)
+ * Low severity threats get longer TTL (less frequent updates)
+ */
+function calculateTTLBySeverity(confidence) {
+  const baseTTL = Number(process.env.CACHE_TTL_SECONDS || 900); // 15 minutes default
+  
+  // Higher confidence = shorter TTL
+  if (confidence >= 80) {
+    return Math.max(60, baseTTL * 0.25); // 15 min * 0.25 = ~4 minutes minimum
+  } else if (confidence >= 50) {
+    return Math.max(60, baseTTL * 0.5); // 15 min * 0.5 = ~7.5 minutes minimum
+  } else {
+    return baseTTL; // Full TTL for low confidence
+  }
 }
 
 export async function getCachedIntel({ indicator, type }) {
@@ -29,8 +48,16 @@ export async function getCachedIntel({ indicator, type }) {
 }
 
 export async function setCachedIntel({ indicator, type, value, ttlSeconds }) {
+  // If ttlSeconds is not provided, calculate based on severity
+  let finalTTL = ttlSeconds;
+  if (!ttlSeconds && value && value.overall_score !== undefined) {
+    finalTTL = calculateTTLBySeverity(value.overall_score);
+  } else if (!ttlSeconds) {
+    finalTTL = Number(process.env.CACHE_TTL_SECONDS || 900);
+  }
+  
   const key = cacheKey(type, indicator);
-  const expiresAtMs = nowMs() + ttlSeconds * 1000;
+  const expiresAtMs = nowMs() + finalTTL * 1000;
   memoryCache.set(key, { value, expiresAtMs });
 
   const db = await getDb();

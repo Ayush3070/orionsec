@@ -1,5 +1,7 @@
 import requests
+import random
 from app.core.database import threat_collection
+from app.models.threat_model import threat_model
 
 API_KEY = "b445b56ce0e7cdcb1e14a02cc034d3349054746aa0ac763b327b08154b5dc9b6d932596a863378c2"
 
@@ -56,3 +58,51 @@ def fetch_otx():
                     },
                     upsert=True
                 )
+
+
+def fetch_mock_threats():
+    """Mock threat fetching function for demonstration"""
+    # Generate some mock IPs for demonstration
+    mock_ips = [
+        "192.168.1.100",
+        "10.0.0.50", 
+        "172.16.0.25",
+        "203.0.113.9",
+        "198.51.100.23"
+    ]
+    
+    for ip in mock_ips:
+        # Generate random threat score between 1-100
+        score = random.randint(1, 100)
+        
+        # Store in both collections for compatibility
+        threat_collection.update_one(
+            {"ip": ip},
+            {
+                "$set": {
+                    "ip": ip,
+                    "score": score
+                }
+            },
+            upsert=True
+        )
+        
+        # Also store in the new threat model
+        threat_model.save_threat({
+            "indicator": ip,
+            "type": "ip",
+            "issue": f"Mock threat detected for IP {ip}",
+            "severity": "high" if score > 80 else "medium" if score > 50 else "low",
+            "confidence": score,
+            "source": "MockSource"
+        })
+    
+    return {"status": "Mock threat data updated"}
+
+def fetch_and_store_all_threats():
+    """Fetch threats from all sources"""
+    fetch_and_store_threats()
+    fetch_otx()
+    fetch_mock_threats()
+    
+    return {"status": "All threat sources updated successfully"}

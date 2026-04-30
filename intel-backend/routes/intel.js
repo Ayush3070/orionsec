@@ -4,6 +4,25 @@ import { enrichIndicator } from "../services/aggregator.js";
 
 export const intelRouter = express.Router();
 
+// Input validation functions
+function validateIndicator(indicator) {
+  if (!indicator || typeof indicator !== 'string') {
+    return { valid: false, error: 'Indicator is required and must be a string' };
+  }
+  
+  const trimmed = indicator.trim();
+  if (!trimmed) {
+    return { valid: false, error: 'Indicator cannot be empty or just whitespace' };
+  }
+  
+  // Basic length validation
+  if (trimmed.length > 255) {
+    return { valid: false, error: 'Indicator is too long (max 255 characters)' };
+  }
+  
+  return { valid: true, indicator: trimmed };
+}
+
 // Minimal in-memory rate limiting (per IP).
 const windowMs = 60_000;
 const maxPerWindow = 30;
@@ -41,7 +60,14 @@ intelRouter.use((req, res, next) => {
 });
 
 intelRouter.post("/scan", rateLimit, async (req, res) => {
-  const parsed = normalizeIndicator(req.body?.indicator);
+  // Input validation
+  const { indicator } = req.body || {};
+  const validation = validateIndicator(indicator);
+  if (!validation.valid) {
+    return res.status(400).json({ error: "bad_request", message: validation.error });
+  }
+  
+  const parsed = normalizeIndicator(validation.indicator);
   if (!parsed.ok) return res.status(400).json({ error: "bad_request", message: parsed.error });
 
   try {

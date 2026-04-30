@@ -1,0 +1,66 @@
+{
+  "rules": [
+    {
+      "id": "eval_usage",
+      "pattern": "\\\\beval\\\\s*\\\\([^\\\\)]*\\\\)",
+      "issue": "Use of eval() (code execution risk)",
+      "severity": "high",
+      "weight": 10,
+      "description": "Detects usage of eval() function which can lead to code injection"
+    },
+    {
+      "id": "hardcoded_api_key",
+      "pattern": "(?i)(api[_-]?key|token|secret|password|credential)[\\s]*[=:][\\s]*['\\\"][A-Za-z0-9_\\-\\+\\/=]{20,}['\\\"]",
+      "issue": "Possible hardcoded API key / token",
+      "severity": "high",
+      "weight": 9,
+      "description": "Detects hardcoded API keys, tokens, or secrets"
+    },
+    {
+      "id": "hardcoded_password",
+      "pattern": "(?i)password[\\s]*[=:][\\s]*['\\\"][^'\\\"]{8,}['\\\"]",
+      "issue": "Possible hardcoded password assignment",
+      "severity": "medium",
+      "weight": 7,
+      "description": "Detects hardcoded passwords"
+    },
+    {
+      "id": "failed_login_attempts",
+      "pattern": "(?i)failed.*login",
+      "issue": "Repeated 'failed login' event",
+      "severity": "low",
+      "weight": 3,
+      "description": "Detects failed login attempts"
+    },
+    {
+      "id": "suspicious_ip",
+      "pattern": "(?i)suspicious.*ip",
+      "issue": "Suspicious IP detected",
+      "severity": "medium",
+      "weight": 6,
+      "description": "Detects suspicious IP addresses"
+    },
+    {
+      "id": "long_token",
+      "pattern": "[A-Za-z0-9_\\-]{32,}",
+      "issue": "Possible long token / opaque ID",
+      "severity": "medium",
+      "weight": 5,
+      "description": "Detects long tokens that might be API keys or session tokens"
+    },
+    {
+      "id": "hex_string",
+      "pattern": "[A-Fa-f0-9]{32,}",
+      "issue": "Possible hex-encoded secret",
+      "severity": "medium",
+      "weight": 5,
+      "description": "Detects long hexadecimal strings that might be hashes or keys"
+    }
+  ],
+  "thresholds": {
+    "high": 25,
+    "medium": 10,
+    "low": 0
+  },
+  "bruteforce_threshold": 5
+}

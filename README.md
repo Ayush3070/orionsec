@@ -158,9 +158,13 @@ open http://localhost:5173
 
 ### 🌍 Live Demo
 
-**Try it now:** [https://forty-foes-bet.loca.lt](https://forty-foes-bet.loca.lt)
+**Try it now:** [https://forty-foes-bet.loca.lt](https://forty-foes-bet.loca.lt))
 
-> **Note:** This is a temporary demo link. For permanent hosting, see [Deployment Options](#-deployment-options).
+> **Note:** This is a temporary demo link. For permanent hosting, see [Deployment Guide](DEPLOYMENT.md).
+
+---
+
+### 🚀 Quick Start
 
 ---
 

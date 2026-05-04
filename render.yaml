@@ -11,7 +11,7 @@ services:
       - key: PYTHON_VERSION
         value: 3.12.4
       - key: MONGO_URL
-        value: mongodb://localhost:27017/orionsec
+        value: mongodb+srv://ayushhmishra01_db_user:<password>@cluster0.ifk2wvy.mongodb.net/orionsec?retryWrites=true&w=majority
       - key: SECRET_KEY
         generateValue: true
       - key: CORS_ORIGINS
@@ -30,22 +30,7 @@ services:
       - key: NODE_VERSION
         value: 20
       - key: MONGO_URL
-        value: mongodb://localhost:27017/orionsec
+        value: mongodb+srv://ayushhmishra01_db_user:<password>@cluster0.ifk2wvy.mongodb.net/orionsec?retryWrites=true&w=majority
       - key: CORS_ORIGIN
         value: https://orionsec.onrender.com
     autoDeploy: true
-
-  - type: pserv
-    name: mongodb
-    env: docker
-    plan: free
-    runtime: image
-    repo: mongo:7
-    numInstances: 1
-    disk:
-      name: mongo-data
-      mountPath: /data/db
-      sizeGB: 1
-    envVars:
-      - key: MONGO_INITDB_DATABASE
-        value: orionsec

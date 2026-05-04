@@ -149,9 +149,18 @@ open http://localhost:5173
 ```
 
 **That's it!** 🎉 The platform is now running with:
+
 - 🌐 Frontend: http://localhost:5173
 - 🔌 Backend API: http://localhost:8000/api/docs
 - 🧠 Intel Service: http://localhost:8080
+
+---
+
+### 🌍 Live Demo
+
+**Try it now:** [https://forty-foes-bet.loca.lt](https://forty-foes-bet.loca.lt)
+
+> **Note:** This is a temporary demo link. For permanent hosting, see [Deployment Options](#-deployment-options).
 
 ---
 

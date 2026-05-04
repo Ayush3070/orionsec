@@ -471,7 +471,7 @@ If OrionSec helps you, please **⭐ star this repository**! It helps others disc
 [![Documentation](https://img.shields.io/badge/Read-Docs-blue?style=for-the-badge&logo=gitbook)](https://github.com/yourusername/OrionSec/wiki)
 [![Demo](https://img.shields.io/badge/Watch-Demo-red?style=for-the-badge&logo=youtube)](https://youtube.com/orionsec)
 
-**Built with love by Ayush Mishra**
+**Built with ❤️ by Ayush Mishra**
 
 *Securing the digital world, one threat at a time.* 🛡️
 

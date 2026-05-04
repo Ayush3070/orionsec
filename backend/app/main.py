@@ -1,3 +1,4 @@
+import pathlib
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -32,10 +33,12 @@ app.add_middleware(
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
+
 @app.on_event("startup")
 async def startup_event():
     await init_db()
     print("OrionSec Backend started successfully")
+
 
 @app.on_event("shutdown")
 async def shutdown_event():
@@ -47,6 +50,7 @@ app.include_router(scan.router, prefix="/api/scan", tags=["Scan"])
 app.include_router(threats.router, prefix="/api/threats", tags=["Threats"])
 app.include_router(logs.router, prefix="/api/logs", tags=["Logs"])
 
+
 @app.get("/")
 async def root():
     return {
@@ -57,11 +61,18 @@ async def root():
     }
 
 # Serve frontend in production
-import pathlib
-frontend_dist = str(pathlib.Path(__file__).resolve().parent.parent.parent / "frontend" / "dist")
+frontend_dist = str(
+    pathlib.Path(__file__).resolve().parent.parent.parent /
+    "frontend" /
+    "dist")
 if os.path.exists(frontend_dist):
-    app.mount("/", StaticFiles(directory=frontend_dist, html=True), name="frontend")
-    
+    app.mount(
+        "/",
+        StaticFiles(
+            directory=frontend_dist,
+            html=True),
+        name="frontend")
+
     @app.exception_handler(404)
     async def custom_404(request, exc):
         return FileResponse(os.path.join(frontend_dist, "index.html"))

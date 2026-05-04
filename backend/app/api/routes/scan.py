@@ -1,12 +1,13 @@
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException
-from fastapi.responses import JSONResponse
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List
 
 router = APIRouter()
 
+
 class LogScanRequest(BaseModel):
     logs: str
+
 
 @router.post("/upload")
 async def scan_uploaded_files(
@@ -15,7 +16,7 @@ async def scan_uploaded_files(
 ):
     if not files:
         raise HTTPException(status_code=400, detail="No files provided")
-    
+
     results = []
     for file in files:
         content = await file.read()
@@ -34,7 +35,7 @@ async def scan_uploaded_files(
                 "error": str(e),
                 "threats": []
             })
-    
+
     total_threats = sum(r.get('threat_count', 0) for r in results)
     return {
         "results": results,
@@ -44,17 +45,18 @@ async def scan_uploaded_files(
         }
     }
 
+
 @router.post("/logs")
 async def scan_logs_endpoint(request: LogScanRequest):
     if not request.logs or not request.logs.strip():
         raise HTTPException(status_code=400, detail="No logs provided")
-    
+
     from app.services.detection_service import scan_logs
     threats = await scan_logs(request.logs)
-    
+
     from app.utils.insights import generate_insights
     insights = generate_insights(threats)
-    
+
     return {
         "threats": threats,
         "insights": insights,

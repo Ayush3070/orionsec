@@ -5,12 +5,15 @@ import time
 
 router = APIRouter()
 
+
 @router.get("/", include_in_schema=False)
 @router.get("")
 async def health_check():
     start = time.time()
     try:
-        client = AsyncIOMotorClient(settings.MONGO_URL, serverSelectionTimeoutMS=2000)
+        client = AsyncIOMotorClient(
+            settings.MONGO_URL,
+            serverSelectionTimeoutMS=2000)
         await client.admin.command('ping')
         db_latency = round((time.time() - start) * 1000, 2)
         return {
@@ -28,10 +31,13 @@ async def health_check():
             "error": str(e)
         }
 
+
 @router.get("/ready")
 async def readiness_check():
     try:
-        client = AsyncIOMotorClient(settings.MONGO_URL, serverSelectionTimeoutMS=2000)
+        client = AsyncIOMotorClient(
+            settings.MONGO_URL,
+            serverSelectionTimeoutMS=2000)
         await client.admin.command('ping')
         return {"status": "ready"}
     except Exception:

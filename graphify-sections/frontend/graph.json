@@ -1,0 +1,652 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "label": "tailwind.config.js",
+      "file_type": "code",
+      "source_file": "tailwind.config.js",
+      "source_location": "L1",
+      "id": "tailwind_config_js",
+      "community": 11,
+      "norm_label": "tailwind.config.js"
+    },
+    {
+      "label": "vite.config.js",
+      "file_type": "code",
+      "source_file": "vite.config.js",
+      "source_location": "L1",
+      "id": "vite_config_js",
+      "community": 12,
+      "norm_label": "vite.config.js"
+    },
+    {
+      "label": "postcss.config.js",
+      "file_type": "code",
+      "source_file": "postcss.config.js",
+      "source_location": "L1",
+      "id": "postcss_config_js",
+      "community": 13,
+      "norm_label": "postcss.config.js"
+    },
+    {
+      "label": "main.jsx",
+      "file_type": "code",
+      "source_file": "src/main.jsx",
+      "source_location": "L1",
+      "id": "src_main_jsx",
+      "community": 14,
+      "norm_label": "main.jsx"
+    },
+    {
+      "label": "App.jsx",
+      "file_type": "code",
+      "source_file": "src/App.jsx",
+      "source_location": "L1",
+      "id": "src_app_jsx",
+      "community": 1,
+      "norm_label": "app.jsx"
+    },
+    {
+      "label": "severitySortValue()",
+      "file_type": "code",
+      "source_file": "src/App.jsx",
+      "source_location": "L13",
+      "id": "src_app_severitysortvalue",
+      "community": 1,
+      "norm_label": "severitysortvalue()"
+    },
+    {
+      "label": "App()",
+      "file_type": "code",
+      "source_file": "src/App.jsx",
+      "source_location": "L28",
+      "id": "src_app_app",
+      "community": 1,
+      "norm_label": "app()"
+    },
+    {
+      "label": "ThemeContext.jsx",
+      "file_type": "code",
+      "source_file": "src/contexts/ThemeContext.jsx",
+      "source_location": "L1",
+      "id": "src_contexts_themecontext_jsx",
+      "community": 1,
+      "norm_label": "themecontext.jsx"
+    },
+    {
+      "label": "ThemeProvider()",
+      "file_type": "code",
+      "source_file": "src/contexts/ThemeContext.jsx",
+      "source_location": "L5",
+      "id": "contexts_themecontext_themeprovider",
+      "community": 1,
+      "norm_label": "themeprovider()"
+    },
+    {
+      "label": "useTheme()",
+      "file_type": "code",
+      "source_file": "src/contexts/ThemeContext.jsx",
+      "source_location": "L23",
+      "id": "contexts_themecontext_usetheme",
+      "community": 1,
+      "norm_label": "usetheme()"
+    },
+    {
+      "label": "insights.js",
+      "file_type": "code",
+      "source_file": "src/utils/insights.js",
+      "source_location": "L1",
+      "id": "src_utils_insights_js",
+      "community": 5,
+      "norm_label": "insights.js"
+    },
+    {
+      "label": "deriveInsights()",
+      "file_type": "code",
+      "source_file": "src/utils/insights.js",
+      "source_location": "L1",
+      "id": "utils_insights_deriveinsights",
+      "community": 5,
+      "norm_label": "deriveinsights()"
+    },
+    {
+      "label": "GroupedView.jsx",
+      "file_type": "code",
+      "source_file": "src/components/GroupedView.jsx",
+      "source_location": "L1",
+      "id": "src_components_groupedview_jsx",
+      "community": 2,
+      "norm_label": "groupedview.jsx"
+    },
+    {
+      "label": "Badge()",
+      "file_type": "code",
+      "source_file": "src/components/GroupedView.jsx",
+      "source_location": "L4",
+      "id": "components_groupedview_badge",
+      "community": 2,
+      "norm_label": "badge()"
+    },
+    {
+      "label": "GroupedView()",
+      "file_type": "code",
+      "source_file": "src/components/GroupedView.jsx",
+      "source_location": "L15",
+      "id": "components_groupedview_groupedview",
+      "community": 2,
+      "norm_label": "groupedview()"
+    },
+    {
+      "label": "ThreatTable.jsx",
+      "file_type": "code",
+      "source_file": "src/components/ThreatTable.jsx",
+      "source_location": "L1",
+      "id": "src_components_threattable_jsx",
+      "community": 3,
+      "norm_label": "threattable.jsx"
+    },
+    {
+      "label": "Badge()",
+      "file_type": "code",
+      "source_file": "src/components/ThreatTable.jsx",
+      "source_location": "L4",
+      "id": "components_threattable_badge",
+      "community": 3,
+      "norm_label": "badge()"
+    },
+    {
+      "label": "ThreatTable()",
+      "file_type": "code",
+      "source_file": "src/components/ThreatTable.jsx",
+      "source_location": "L20",
+      "id": "components_threattable_threattable",
+      "community": 3,
+      "norm_label": "threattable()"
+    },
+    {
+      "label": "Loader.jsx",
+      "file_type": "code",
+      "source_file": "src/components/Loader.jsx",
+      "source_location": "L1",
+      "id": "src_components_loader_jsx",
+      "community": 6,
+      "norm_label": "loader.jsx"
+    },
+    {
+      "label": "Loader()",
+      "file_type": "code",
+      "source_file": "src/components/Loader.jsx",
+      "source_location": "L3",
+      "id": "components_loader_loader",
+      "community": 6,
+      "norm_label": "loader()"
+    },
+    {
+      "label": "InsightsPanel.jsx",
+      "file_type": "code",
+      "source_file": "src/components/InsightsPanel.jsx",
+      "source_location": "L1",
+      "id": "src_components_insightspanel_jsx",
+      "community": 7,
+      "norm_label": "insightspanel.jsx"
+    },
+    {
+      "label": "InsightsPanel()",
+      "file_type": "code",
+      "source_file": "src/components/InsightsPanel.jsx",
+      "source_location": "L4",
+      "id": "components_insightspanel_insightspanel",
+      "community": 7,
+      "norm_label": "insightspanel()"
+    },
+    {
+      "label": "SummaryCards.jsx",
+      "file_type": "code",
+      "source_file": "src/components/SummaryCards.jsx",
+      "source_location": "L1",
+      "id": "src_components_summarycards_jsx",
+      "community": 8,
+      "norm_label": "summarycards.jsx"
+    },
+    {
+      "label": "SummaryCards()",
+      "file_type": "code",
+      "source_file": "src/components/SummaryCards.jsx",
+      "source_location": "L3",
+      "id": "components_summarycards_summarycards",
+      "community": 8,
+      "norm_label": "summarycards()"
+    },
+    {
+      "label": "UploadBox.jsx",
+      "file_type": "code",
+      "source_file": "src/components/UploadBox.jsx",
+      "source_location": "L1",
+      "id": "src_components_uploadbox_jsx",
+      "community": 4,
+      "norm_label": "uploadbox.jsx"
+    },
+    {
+      "label": "humanBytes()",
+      "file_type": "code",
+      "source_file": "src/components/UploadBox.jsx",
+      "source_location": "L4",
+      "id": "components_uploadbox_humanbytes",
+      "community": 4,
+      "norm_label": "humanbytes()"
+    },
+    {
+      "label": "UploadBox()",
+      "file_type": "code",
+      "source_file": "src/components/UploadBox.jsx",
+      "source_location": "L16",
+      "id": "components_uploadbox_uploadbox",
+      "community": 4,
+      "norm_label": "uploadbox()"
+    },
+    {
+      "label": "FilterBar.jsx",
+      "file_type": "code",
+      "source_file": "src/components/FilterBar.jsx",
+      "source_location": "L1",
+      "id": "src_components_filterbar_jsx",
+      "community": 9,
+      "norm_label": "filterbar.jsx"
+    },
+    {
+      "label": "FilterBar()",
+      "file_type": "code",
+      "source_file": "src/components/FilterBar.jsx",
+      "source_location": "L3",
+      "id": "components_filterbar_filterbar",
+      "community": 9,
+      "norm_label": "filterbar()"
+    },
+    {
+      "label": "Charts.jsx",
+      "file_type": "code",
+      "source_file": "src/components/Charts.jsx",
+      "source_location": "L1",
+      "id": "src_components_charts_jsx",
+      "community": 10,
+      "norm_label": "charts.jsx"
+    },
+    {
+      "label": "Charts()",
+      "file_type": "code",
+      "source_file": "src/components/Charts.jsx",
+      "source_location": "L22",
+      "id": "components_charts_charts",
+      "community": 10,
+      "norm_label": "charts()"
+    },
+    {
+      "label": "api.js",
+      "file_type": "code",
+      "source_file": "src/services/api.js",
+      "source_location": "L1",
+      "id": "src_services_api_js",
+      "community": 0,
+      "norm_label": "api.js"
+    },
+    {
+      "label": "readText()",
+      "file_type": "code",
+      "source_file": "src/services/api.js",
+      "source_location": "L3",
+      "id": "services_api_readtext",
+      "community": 0,
+      "norm_label": "readtext()"
+    },
+    {
+      "label": "scanInputs()",
+      "file_type": "code",
+      "source_file": "src/services/api.js",
+      "source_location": "L7",
+      "id": "services_api_scaninputs",
+      "community": 0,
+      "norm_label": "scaninputs()"
+    },
+    {
+      "label": "getThreatHistory()",
+      "file_type": "code",
+      "source_file": "src/services/api.js",
+      "source_location": "L36",
+      "id": "services_api_getthreathistory",
+      "community": 0,
+      "norm_label": "getthreathistory()"
+    },
+    {
+      "label": "getThreats()",
+      "file_type": "code",
+      "source_file": "src/services/api.js",
+      "source_location": "L54",
+      "id": "services_api_getthreats",
+      "community": 0,
+      "norm_label": "getthreats()"
+    },
+    {
+      "label": "getIntelHistory()",
+      "file_type": "code",
+      "source_file": "src/services/api.js",
+      "source_location": "L78",
+      "id": "services_api_getintelhistory",
+      "community": 0,
+      "norm_label": "getintelhistory()"
+    },
+    {
+      "label": "postIntelScan()",
+      "file_type": "code",
+      "source_file": "src/services/api.js",
+      "source_location": "L96",
+      "id": "services_api_postintelscan",
+      "community": 0,
+      "norm_label": "postintelscan()"
+    }
+  ],
+  "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.jsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_src": "src_app_jsx",
+      "_tgt": "src_app_severitysortvalue",
+      "source": "src_app_jsx",
+      "target": "src_app_severitysortvalue",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.jsx",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_src": "src_app_jsx",
+      "_tgt": "src_app_app",
+      "source": "src_app_jsx",
+      "target": "src_app_app",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "src/App.jsx",
+      "source_location": "L29",
+      "weight": 1.0,
+      "_src": "src_app_app",
+      "_tgt": "contexts_themecontext_usetheme",
+      "source": "src_app_app",
+      "target": "contexts_themecontext_usetheme"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/contexts/ThemeContext.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_src": "src_contexts_themecontext_jsx",
+      "_tgt": "contexts_themecontext_themeprovider",
+      "source": "src_contexts_themecontext_jsx",
+      "target": "contexts_themecontext_themeprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/contexts/ThemeContext.jsx",
+      "source_location": "L23",
+      "weight": 1.0,
+      "_src": "src_contexts_themecontext_jsx",
+      "_tgt": "contexts_themecontext_usetheme",
+      "source": "src_contexts_themecontext_jsx",
+      "target": "contexts_themecontext_usetheme",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/utils/insights.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_src": "src_utils_insights_js",
+      "_tgt": "utils_insights_deriveinsights",
+      "source": "src_utils_insights_js",
+      "target": "utils_insights_deriveinsights",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/GroupedView.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_src": "src_components_groupedview_jsx",
+      "_tgt": "components_groupedview_badge",
+      "source": "src_components_groupedview_jsx",
+      "target": "components_groupedview_badge",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/GroupedView.jsx",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_src": "src_components_groupedview_jsx",
+      "_tgt": "components_groupedview_groupedview",
+      "source": "src_components_groupedview_jsx",
+      "target": "components_groupedview_groupedview",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/ThreatTable.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_src": "src_components_threattable_jsx",
+      "_tgt": "components_threattable_badge",
+      "source": "src_components_threattable_jsx",
+      "target": "components_threattable_badge",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/ThreatTable.jsx",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_src": "src_components_threattable_jsx",
+      "_tgt": "components_threattable_threattable",
+      "source": "src_components_threattable_jsx",
+      "target": "components_threattable_threattable",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/Loader.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_src": "src_components_loader_jsx",
+      "_tgt": "components_loader_loader",
+      "source": "src_components_loader_jsx",
+      "target": "components_loader_loader",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/InsightsPanel.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_src": "src_components_insightspanel_jsx",
+      "_tgt": "components_insightspanel_insightspanel",
+      "source": "src_components_insightspanel_jsx",
+      "target": "components_insightspanel_insightspanel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/SummaryCards.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_src": "src_components_summarycards_jsx",
+      "_tgt": "components_summarycards_summarycards",
+      "source": "src_components_summarycards_jsx",
+      "target": "components_summarycards_summarycards",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/UploadBox.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_src": "src_components_uploadbox_jsx",
+      "_tgt": "components_uploadbox_humanbytes",
+      "source": "src_components_uploadbox_jsx",
+      "target": "components_uploadbox_humanbytes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/UploadBox.jsx",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_src": "src_components_uploadbox_jsx",
+      "_tgt": "components_uploadbox_uploadbox",
+      "source": "src_components_uploadbox_jsx",
+      "target": "components_uploadbox_uploadbox",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/UploadBox.jsx",
+      "source_location": "L65",
+      "weight": 1.0,
+      "_src": "components_uploadbox_uploadbox",
+      "_tgt": "components_uploadbox_humanbytes",
+      "source": "components_uploadbox_humanbytes",
+      "target": "components_uploadbox_uploadbox",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/FilterBar.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_src": "src_components_filterbar_jsx",
+      "_tgt": "components_filterbar_filterbar",
+      "source": "src_components_filterbar_jsx",
+      "target": "components_filterbar_filterbar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/Charts.jsx",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_src": "src_components_charts_jsx",
+      "_tgt": "components_charts_charts",
+      "source": "src_components_charts_jsx",
+      "target": "components_charts_charts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/api.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_src": "src_services_api_js",
+      "_tgt": "services_api_readtext",
+      "source": "src_services_api_js",
+      "target": "services_api_readtext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/api.js",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_src": "src_services_api_js",
+      "_tgt": "services_api_scaninputs",
+      "source": "src_services_api_js",
+      "target": "services_api_scaninputs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/api.js",
+      "source_location": "L36",
+      "weight": 1.0,
+      "_src": "src_services_api_js",
+      "_tgt": "services_api_getthreathistory",
+      "source": "src_services_api_js",
+      "target": "services_api_getthreathistory",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/api.js",
+      "source_location": "L54",
+      "weight": 1.0,
+      "_src": "src_services_api_js",
+      "_tgt": "services_api_getthreats",
+      "source": "src_services_api_js",
+      "target": "services_api_getthreats",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/api.js",
+      "source_location": "L115",
+      "weight": 1.0,
+      "_src": "src_services_api_js",
+      "_tgt": "services_api_getintelhistory",
+      "source": "src_services_api_js",
+      "target": "services_api_getintelhistory",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/api.js",
+      "source_location": "L96",
+      "weight": 1.0,
+      "_src": "src_services_api_js",
+      "_tgt": "services_api_postintelscan",
+      "source": "src_services_api_js",
+      "target": "services_api_postintelscan",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/api.js",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_src": "services_api_scaninputs",
+      "_tgt": "services_api_readtext",
+      "source": "services_api_readtext",
+      "target": "services_api_scaninputs",
+      "confidence_score": 1.0
+    }
+  ],
+  "hyperedges": []
+}

@@ -4,7 +4,6 @@ import { enrichIndicator } from "../services/aggregator.js";
 
 export const intelRouter = express.Router();
 
-// Input validation functions
 function validateIndicator(indicator) {
   if (!indicator || typeof indicator !== 'string') {
     return { valid: false, error: 'Indicator is required and must be a string' };
@@ -15,7 +14,6 @@ function validateIndicator(indicator) {
     return { valid: false, error: 'Indicator cannot be empty or just whitespace' };
   }
   
-  // Basic length validation
   if (trimmed.length > 255) {
     return { valid: false, error: 'Indicator is too long (max 255 characters)' };
   }
@@ -23,7 +21,6 @@ function validateIndicator(indicator) {
   return { valid: true, indicator: trimmed };
 }
 
-// Minimal in-memory rate limiting (per IP).
 const windowMs = 60_000;
 const maxPerWindow = 30;
 const buckets = new Map();
@@ -45,7 +42,6 @@ function rateLimit(req, res, next) {
   return next();
 }
 
-// Simple CORS (optional).
 intelRouter.use((req, res, next) => {
   const allowed = (process.env.CORS_ORIGIN || "").split(",").map((s) => s.trim()).filter(Boolean);
   const origin = req.headers.origin;
@@ -60,7 +56,6 @@ intelRouter.use((req, res, next) => {
 });
 
 intelRouter.post("/scan", rateLimit, async (req, res) => {
-  // Input validation
   const { indicator } = req.body || {};
   const validation = validateIndicator(indicator);
   if (!validation.valid) {
@@ -78,3 +73,13 @@ intelRouter.post("/scan", rateLimit, async (req, res) => {
   }
 });
 
+intelRouter.get("/history", async (req, res) => {
+  try {
+    const db = await getDb();
+    const collection = db.collection('threats');
+    const threats = await collection.find({}).sort({ last_seen: -1 }).limit(100).toArray();
+    res.json(threats.map(t => ({ ...t, _id: undefined })));
+  } catch (err) {
+    res.status(500).json({ error: "internal_error", message: err.message });
+  }
+});

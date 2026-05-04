@@ -1,86 +1,76 @@
-import React, { useMemo, useState } from "react";
-import { Search, ShieldAlert } from "lucide-react";
+import React from "react";
+import { AlertTriangle, AlertCircle, Info, Shield, Server } from "lucide-react";
 
-function Badge({ severity, theme = "dark" }) {
-  const s = String(severity || "").toLowerCase();
-  const map = {
-    high: { dark: "bg-red-500/15 text-red-200 border-red-500/30", light: "bg-red-50 text-red-700 border-red-500/20" },
-    medium: { dark: "bg-yellow-500/15 text-yellow-100 border-yellow-500/30", light: "bg-yellow-50 text-yellow-700 border-yellow-500/20" },
-    low: { dark: "bg-emerald-500/15 text-emerald-100 border-emerald-500/30", light: "bg-emerald-50 text-emerald-700 border-emerald-500/20" },
+export default function ThreatTable({ threats, theme }) {
+  const sevIcon = (sev) => {
+    const s = (sev || "").toLowerCase();
+    if (s === "high") return <AlertTriangle className="h-4 w-4 text-cyber-red" />;
+    if (s === "medium") return <AlertCircle className="h-4 w-4 text-yellow-400" />;
+    return <Info className="h-4 w-4 text-neon" />;
   };
-  const cls = map[s]?.[theme] || (theme === "dark" ? "bg-white/5 text-white/70 border-white/10" : "bg-gray-50 text-gray-600 border-gray-200");
-  return (
-    <span className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-semibold ${cls}`}>
-      <ShieldAlert className="h-3 w-3" />
-      {s || "unknown"}
-    </span>
-  );
-}
 
-export default function ThreatTable({ threats, theme = "dark" }) {
-  const [query, setQuery] = useState("");
+  const sevBadge = (sev) => {
+    const s = (sev || "low").toLowerCase();
+    if (s === "high") return "bg-cyber-red/15 text-cyber-red border-cyber-red/30 shadow-[0_0_8px_rgba(255,77,79,0.2)]";
+    if (s === "medium") return "bg-yellow-400/15 text-yellow-300 border-yellow-400/30";
+    return "bg-neon/15 text-neon border-neon/30 shadow-[0_0_8px_rgba(0,255,159,0.2)]";
+  };
 
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return threats;
-    return threats.filter((t) => {
-      const hay = `${t.file ?? ""} ${t.issue ?? ""} ${t.severity ?? ""} ${t.line ?? ""}`.toLowerCase();
-      return hay.includes(q);
-    });
-  }, [threats, query]);
-
-  return (
-    <div className={`rounded-2xl border p-5 shadow-lg transition-all ${theme === "dark" ? "border-white/10 bg-panel-dark" : "border-gray-200 bg-white"}`}>
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${theme === "dark" ? "bg-gradient-to-br from-red-500/20 to-orange-500/20" : "bg-gradient-to-br from-red-50 to-orange-50"}`}>
-            <ShieldAlert className={`h-5 w-5 ${theme === "dark" ? "text-red-400" : "text-red-600"}`} />
-          </div>
-          <div>
-            <div className={`text-sm font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Threat Table</div>
-            <div className={`text-xs ${theme === "dark" ? "text-white/50" : "text-gray-500"}`}>{filtered.length} finding(s) detected</div>
-          </div>
-        </div>
-        <div className="relative w-full sm:w-72">
-          <Search className={`absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 ${theme === "dark" ? "text-white/40" : "text-gray-400"}`} />
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search findings..."
-            className={`w-full rounded-xl border py-2.5 pl-10 pr-4 text-sm outline-none transition-all ${theme === "dark" ? "border-white/10 bg-black/20 text-white/90 placeholder:text-white/30 focus:border-cyan-400/50" : "border-gray-200 bg-gray-50 text-gray-900 placeholder:text-gray-400 focus:border-cyan-500/50"}`}
-          />
-        </div>
+  if (threats.length === 0) {
+    return (
+      <div className={`rounded-3xl border p-12 text-center backdrop-blur-xl ${theme === "dark" ? "border-white/10 bg-[#0c0c0c]/60" : "border-gray-200 bg-white"}`}>
+        <Shield className={`mx-auto mb-3 h-14 w-14 ${theme === "dark" ? "text-white/20" : "text-gray-300"}`} />
+        <p className={theme === "dark" ? "text-white/50" : "text-gray-500"}>No threats detected</p>
+        <p className={`mt-1 text-xs ${theme === "dark" ? "text-white/30" : "text-gray-400"}`}>Upload files or paste logs to begin scanning</p>
       </div>
+    );
+  }
 
-      {filtered.length === 0 ? (
-        <div className={`mt-6 rounded-xl border px-6 py-8 text-center ${theme === "dark" ? "border-white/10 bg-white/5" : "border-gray-200 bg-gray-50"}`}>
-          <ShieldAlert className={`mx-auto h-8 w-8 ${theme === "dark" ? "text-white/20" : "text-gray-300"}`} />
-          <p className={`mt-3 text-sm ${theme === "dark" ? "text-white/50" : "text-gray-500"}`}>{query ? "No matching findings" : "No threats to display"}</p>
-        </div>
-      ) : (
-        <div className="orion-scrollbar mt-4 overflow-auto">
-          <table className="min-w-[720px] w-full border-separate border-spacing-y-2">
-            <thead>
-              <tr className="text-left text-[11px] uppercase tracking-wider">
-                <th className={`px-4 py-3 font-semibold ${theme === "dark" ? "text-white/50" : "text-gray-500"}`}>File</th>
-                <th className={`px-4 py-3 font-semibold ${theme === "dark" ? "text-white/50" : "text-gray-500"}`}>Issue</th>
-                <th className={`px-4 py-3 font-semibold ${theme === "dark" ? "text-white/50" : "text-gray-500"}`}>Severity</th>
-                <th className={`px-4 py-3 font-semibold ${theme === "dark" ? "text-white/50" : "text-gray-500"}`}>Line</th>
+  return (
+    <div className={`rounded-3xl border shadow-2xl overflow-hidden backdrop-blur-xl ${theme === "dark" ? "border-white/10 bg-[#0c0c0c]/80" : "border-gray-200 bg-white"}`}>
+      <div className={`flex items-center gap-3 px-5 py-4 ${theme === "dark" ? "border-b border-white/5 bg-white/5" : "border-b border-gray-100 bg-gray-50"}`}>
+        <Server className={`h-4 w-4 ${theme === "dark" ? "text-electric" : "text-cyan-600"}`} />
+        <span className={`text-sm font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Threat Registry</span>
+        <span className={`ml-auto rounded-full border px-2.5 py-0.5 text-xs font-medium ${theme === "dark" ? "bg-white/10 border-white/10 text-white/60" : "bg-gray-100 border-gray-200 text-gray-600"}`}>
+          {threats.length} entries
+        </span>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className={`border-b ${theme === "dark" ? "border-white/5 bg-black/20" : "border-gray-100 bg-gray-50"}`}>
+              <th className={`px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider ${theme === "dark" ? "text-white/50" : "text-gray-500"}`}>Severity</th>
+              <th className={`px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider ${theme === "dark" ? "text-white/50" : "text-gray-500"}`}>Issue</th>
+              <th className={`px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider ${theme === "dark" ? "text-white/50" : "text-gray-500"}`}>Source</th>
+              <th className={`px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider ${theme === "dark" ? "text-white/50" : "text-gray-500"}`}>Line</th>
+              <th className={`px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider ${theme === "dark" ? "text-white/50" : "text-gray-500"}`}>Weight</th>
+            </tr>
+          </thead>
+          <tbody>
+            {threats.map((t, i) => (
+              <tr 
+                key={i} 
+                className={`transition-all duration-150 hover:${theme === "dark" ? "bg-white/[0.04]" : "bg-gray-50"} ${theme === "dark" ? "border-white/5" : "border-gray-100"} border-b`}
+              >
+                <td className="px-5 py-4">
+                  <div className="flex items-center gap-2">
+                    {sevIcon(t.severity)}
+                    <span className={`rounded-full border px-2.5 py-1 text-xs font-semibold ${sevBadge(t.severity)}`}>
+                      {t.severity}
+                    </span>
+                  </div>
+                </td>
+                <td className={`px-5 py-4 max-w-xs ${theme === "dark" ? "text-white/90" : "text-gray-700"}`}>
+                  <span className="truncate block">{t.issue}</span>
+                </td>
+                <td className={`px-5 py-4 font-mono text-xs ${theme === "dark" ? "text-electric/80" : "text-cyan-600/80"}`}>{t.file || "-"}</td>
+                <td className={`px-5 py-4 ${theme === "dark" ? "text-white/60" : "text-gray-500"}`}>{t.line || "-"}</td>
+                <td className={`px-5 py-4 font-mono text-xs ${theme === "dark" ? "text-white/50" : "text-gray-400"}`}>{t.weight}</td>
               </tr>
-            </thead>
-            <tbody>
-              {filtered.map((t, idx) => (
-                <tr key={`${t.file ?? "?"}:${t.issue ?? "?"}:${t.line ?? "?"}:${idx}`} className={`transition-all ${theme === "dark" ? "hover:bg-white/5" : "hover:bg-gray-50"}`}>
-                  <td className={`max-w-[280px] truncate rounded-l-xl px-4 py-3 text-sm font-semibold ${theme === "dark" ? "text-white/90" : "text-gray-700"}`}>{t.file || "—"}</td>
-                  <td className={`px-4 py-3 text-sm ${theme === "dark" ? "text-white/80" : "text-gray-600"}`}>{t.issue || "—"}</td>
-                  <td className="px-4 py-3"><Badge severity={t.severity} theme={theme} /></td>
-                  <td className={`rounded-r-xl px-4 py-3 text-sm font-mono ${theme === "dark" ? "text-white/60" : "text-gray-500"}`}>{t.line ?? "—"}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

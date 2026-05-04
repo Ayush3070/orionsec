@@ -5,11 +5,10 @@ import { fetchMockSource } from "./intel_sources/mock_source.js";
 import { getCachedIntel, setCachedIntel } from "./cache.js";
 
 function overallFromSources(sources) {
-  // Define weights and reliability factors for each source
   const sourceConfig = {
     AbuseIPDB: { weight: 0.5, reliability: 0.9 },
     OTX: { weight: 0.3, reliability: 0.8 },
-    MockSource: { weight: 0.2, reliability: 0.5 } // Lower reliability for mock source
+    MockSource: { weight: 0.2, reliability: 0.5 }
   };
 
   let total = 0;
@@ -22,7 +21,6 @@ function overallFromSources(sources) {
     total += weightedConfidence * config.weight;
     weightSum += config.weight;
     
-    // Collect source details for explanation
     sourceDetails.push({
       name: s.name,
       confidence: clampScore(s.confidence ?? 0),
@@ -55,22 +53,19 @@ export async function enrichIndicator({ indicator, type }) {
 
   const results = await Promise.allSettled(calls);
   for (const result of results) {
-    if (result.status === "fulfilled") {
+    if (result.status === "fulfilled" && result.value) {
       const { result: sourceResult, source } = result.value;
       if (sourceResult) {
         sources.push(sourceResult);
       }
-    } else {
-      // Handle rejected promises
-      const { reason, source } = result.reason;
+    } else if (result.status === "rejected") {
       sourceErrors.push({
-        source,
-        message: reason?.message || "Source request failed"
+        source: "unknown",
+        message: result.reason?.message || "Source request failed"
       });
     }
   }
 
-  // Deduplicate by source name (defensive).
   const deduped = [];
   const seen = new Set();
   for (const s of sources) {
@@ -79,9 +74,8 @@ export async function enrichIndicator({ indicator, type }) {
     deduped.push(s);
   }
 
-  const { overall_score, sourceDetails } = overallFromSources(deduped);
+  const { score: overall_score, details: sourceDetails } = overallFromSources(deduped);
   
-  // Generate explanation
   const explanation = generateExplanation(deduped, sourceDetails, overall_score, sourceErrors);
 
   const value = {
@@ -130,7 +124,6 @@ function generateExplanation(sources, sourceDetails, overall_score, sourceErrors
     explanation += `; ${sourceErrors.length} source(s) failed`;
   }
   
-  // Add weighting details if we have multiple sources
   if (sources.length > 1) {
     explanation += `. Weighted contributions: `;
     const contributions = sourceDetails
@@ -141,4 +134,3 @@ function generateExplanation(sources, sourceDetails, overall_score, sourceErrors
   
   return explanation;
 }
-

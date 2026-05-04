@@ -4,24 +4,24 @@
 
 :root {
   color-scheme: dark;
+  --neon-green: #00ff9f;
+  --electric-blue: #00c3ff;
+  --cyber-red: #ff4d4f;
 }
 
-/* Light mode styles */
 html.light {
   color-scheme: light;
 }
 
-/* Dark mode (default) */
 html:not(.light) {
-  --bg-dark: #0a0b14;
-  --bg-sidebar-dark: #0f111a;
-  --bg-panel-dark: #131520;
+  --bg-dark: #000000;
+  --bg-sidebar-dark: #0a0a0a;
+  --bg-panel-dark: #0c0c0c;
   --text-primary-dark: #ffffff;
   --text-secondary-dark: rgba(255, 255, 255, 0.6);
-  --border-dark: rgba(255, 255, 255, 0.1);
+  --border-dark: rgba(255, 255, 255, 0.08);
 }
 
-/* Light mode variables */
 html.light {
   --bg-light: #f8fafc;
   --bg-sidebar-light: #ffffff;
@@ -36,21 +36,20 @@ body {
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
 }
 
-/* Dark mode background */
 html:not(.light) body {
-  background: radial-gradient(circle at 20% 15%, rgba(68, 194, 255, 0.08), transparent 40%),
-    radial-gradient(circle at 80% 0%, rgba(74, 242, 197, 0.08), transparent 40%),
-    linear-gradient(135deg, #0a0b14 0%, #0f111a 50%, #0a0b14 100%);
+  background: 
+    radial-gradient(ellipse 80% 50% at 20% 20%, rgba(0, 195, 255, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(0, 255, 159, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.5), #000000 100%),
+    linear-gradient(180deg, #000000 0%, #0a0a0a 100%);
   min-height: 100vh;
 }
 
-/* Light mode background */
 html.light body {
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
   min-height: 100vh;
 }
 
-/* Custom scrollbar */
 .orion-scrollbar::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -77,31 +76,15 @@ html.light .orion-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.25);
 }
 
-/* Animations */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-@keyframes glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(34, 211, 238, 0.1); }
-  50% { box-shadow: 0 0 30px rgba(34, 211, 238, 0.2); }
 }
 
 .animate-fade-in {
   animation: fadeIn 0.3s ease-out forwards;
 }
 
-.animate-pulse-slow {
-  animation: pulse 2s ease-in-out infinite;
-}
-
-/* Utility classes */
 .shadow-glow {
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
 }
@@ -110,33 +93,6 @@ html.light .shadow-glow {
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
 }
 
-/* Border utilities */
-.border-stroke {
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-html.light .border-stroke {
-  border-color: #e2e8f0;
-}
-
-/* Background utilities */
-.bg-panel {
-  background-color: #131520;
-}
-
-html.light .bg-panel {
-  background-color: #ffffff;
-}
-
-.bg-sidebar {
-  background-color: #0f111a;
-}
-
-html.light .bg-sidebar {
-  background-color: #ffffff;
-}
-
-/* Focus ring for inputs */
 input:focus, textarea:focus {
   outline: none;
 }
@@ -149,4 +105,71 @@ html:not(.light) textarea:focus {
 html.light input:focus,
 html.light textarea:focus {
   box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.2);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; max-height: 0; }
+  to { opacity: 1; max-height: 500px; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 8px rgba(0, 195, 255, 0.3); }
+  50% { box-shadow: 0 0 16px rgba(0, 195, 255, 0.5); }
+}
+
+@keyframes scan-line {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.shadow-glow {
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+}
+
+.shadow-glow-electric {
+  box-shadow: 0 0 20px rgba(0, 195, 255, 0.2);
+}
+
+.shadow-glow-neon {
+  box-shadow: 0 0 20px rgba(0, 255, 159, 0.2);
+}
+
+.shadow-glow-red {
+  box-shadow: 0 0 20px rgba(255, 77, 79, 0.3);
+}
+
+.glass-effect {
+  background: rgba(12, 12, 12, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.cyber-border {
+  position: relative;
+}
+
+.cyber-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(0, 195, 255, 0.3), rgba(0, 255, 159, 0.1));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }

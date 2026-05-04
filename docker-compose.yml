@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: orionsec-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - orionsec-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: orionsec-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - orionsec-network
+
+  backend:
+    build: ./backend
+    container_name: orionsec-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGO_URL=mongodb://mongodb:27017/
+      - MONGO_DB=orionsec
+      - REDIS_URL=redis://redis:6379/0
+      - CORS_ORIGINS=http://localhost:5173,http://frontend:5173
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - orionsec-network
+    volumes:
+      - ./backend:/app
+      - ./logs:/app/logs
+
+  intel-backend:
+    build: ./intel-backend
+    container_name: orionsec-intel
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - MONGO_URL=mongodb://mongodb:27017/
+      - MONGO_DB=orionsec
+      - CORS_ORIGIN=http://localhost:5173,http://frontend:5173
+    depends_on:
+      - mongodb
+    networks:
+      - orionsec-network
+    volumes:
+      - ./intel-backend:/app
+
+  frontend:
+    build: ./frontend
+    container_name: orionsec-frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000
+    networks:
+      - orionsec-network
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+networks:
+  orionsec-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+  redis_data:

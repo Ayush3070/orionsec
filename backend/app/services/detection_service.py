@@ -1,54 +1,53 @@
-from collections import Counter
-from app.core.database import threat_collection
-from app.services.rule_engine import scan_content_with_rules, ThreatFinding
+import re
+from typing import List, Dict, Any
+from app.services.rule_engine import RuleEngine
+from app.core.database import get_db
 
-def detect_threats_from_logs(log_ips):
-    alerts = []
+rule_engine = RuleEngine()
 
-    for ip in log_ips:
-        result = threat_collection.find_one({"ip": ip})
-
-        if result:
-            score = result["score"]
-            if score > 80:
-                level = "HIGH"
-            elif score > 50:
-                level = "MEDIUM"
-            else:
-                level = "LOW"
-        
-            alerts.append({
-                "ip": ip,
-                "score": score,
-                "level": level
-            })
-
-    return alerts
-
-def detect_bruteforce(log_ips):
-    counts = Counter(log_ips)
-
-    suspicious = [
-        {"ip": ip, "attempts": count}
-        for ip, count in counts.items()
-        if count> 5
-
-    ]
-    return suspicious
-
-def scan_file_content(filename: str, content: str):
-    """Scan file content using rule-based engine"""
-    threats = scan_content_with_rules(filename, content)
-    
-    # Convert ThreatFinding objects to dictionaries
-    threat_dicts = []
-    for threat in threats:
-        threat_dicts.append({
-            "file": threat.file,
-            "issue": threat.issue,
-            "severity": threat.severity,
-            "line": threat.line,
-            "weight": threat.weight
+async def scan_files(filename: str, content: str) -> List[Dict[str, Any]]:
+    threats = rule_engine.scan_content(filename, content)
+    results = []
+    for t in threats:
+        results.append({
+            "file": t.file,
+            "issue": t.issue,
+            "severity": t.severity,
+            "line": t.line,
+            "weight": t.weight
         })
-    
-    return threat_dicts
+    return results
+
+async def scan_logs(logs: str) -> List[Dict[str, Any]]:
+    threats = rule_engine.scan_content("logs", logs)
+    results = []
+    for t in threats:
+        results.append({
+            "issue": t.issue,
+            "severity": t.severity,
+            "weight": t.weight,
+            "indicator": extract_indicator(t.issue)
+        })
+    return results
+
+async def analyze_logs(log_entries: List[Dict]) -> List[Dict[str, Any]]:
+    results = []
+    for entry in log_entries:
+        message = entry.get("message", "")
+        threats = rule_engine.scan_content("log", message)
+        for t in threats:
+            results.append({
+                "issue": t.issue,
+                "severity": t.severity,
+                "weight": t.weight,
+                "indicator": extract_indicator(t.issue),
+                "timestamp": entry.get("timestamp")
+            })
+    return results
+
+def extract_indicator(text: str) -> str:
+    ip_pattern = r'\b(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b'
+    match = re.search(ip_pattern, text)
+    if match:
+        return match.group(0)
+    return ""

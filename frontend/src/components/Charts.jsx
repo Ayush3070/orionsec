@@ -1,128 +1,95 @@
-import React, { useMemo } from "react";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-} from "recharts";
+import React from "react";
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { Activity } from "lucide-react";
 
-const COLORS = {
-  high: "#ef4444",
-  medium: "#f59e0b",
-  low: "#10b981",
+const SEVERITY_COLORS = { 
+  high: "#ff4d4f", 
+  medium: "#eab308", 
+  low: "#00ff9f" 
 };
 
-export default function Charts({ threats = [] }) {
-  // Prepare data for line chart: threats over time (by first_seen)
-  const timelineData = useMemo(() => {
-    const map = {};
-    threats.forEach((threat) => {
-      const date = new Date(threat.first_seen).toISOString().split("T")[0];
-      map[date] = (map[date] || 0) + 1;
-    });
-    return Object.keys(map)
-      .sort()
-      .map((date) => ({
-        date,
-        count: map[date],
-      }));
-  }, [threats]);
+const CustomTooltip = ({ active, payload }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="rounded-lg border border-white/10 bg-black/90 px-3 py-2 shadow-xl backdrop-blur-xl">
+        <p className="text-xs font-medium text-white">{payload[0].name}</p>
+        <p className="text-sm font-bold text-white/80">{payload[0].value}</p>
+      </div>
+    );
+  }
+  return null;
+};
 
-  // Prepare data for pie chart: severity distribution
-  const severityData = useMemo(() => {
-    const counts = { high: 0, medium: 0, low: 0 };
-    threats.forEach((threat) => {
-      const severity = String(threat.severity || "").toLowerCase();
-      if (counts[severity] !== undefined) {
-        counts[severity]++;
-      }
-    });
-    return Object.keys(counts)
-      .filter((key) => counts[key] > 0)
-      .map((severity) => ({
-        severity,
-        count: counts[severity],
-      }));
-  }, [threats]);
+export default function Charts({ threats, theme }) {
+  const counts = { high: 0, medium: 0, low: 0 };
+  threats.forEach(t => {
+    const s = (t.severity || "low").toLowerCase();
+    if (counts[s] !== undefined) counts[s]++;
+  });
+
+  const pie = Object.entries(counts).filter(([, v]) => v > 0).map(([k, v]) => ({ name: k, value: v }));
+  const bar = Object.entries(counts).map(([k, v]) => ({ severity: k, count: v }));
+
+  if (threats.length === 0) return null;
 
   return (
-    <div className="grid gap-6 mb-8 sm:grid-cols-2">
-      {/* Line Chart: Threats Over Time */}
-      <div className="bg-white/5 border border-white/10 rounded-xl p-4">
-        <h3 className="mb-4 text-xs font-medium text-white/50 uppercase tracking-wider">
-          Threats Over Time
-        </div>
-        {timelineData.length === 0 ? (
-          <p className="text-white/50 text-center py-8">No threat data available</p>
-        ) : (
-          <ResponsiveContainer width="100%" height={250}>
-            <LineChart data={timelineData}>
-              <CartesianGrid strokeDasharray="3 3" strokeOpacity="0.2" />
-              <XAxis dataKey="date" tick={{ fontSize: 10, fill: "text-white/50" }} />
-              <YAxis tick={{ fontSize: 10, fill: "text-white/50" }} />
-              <Tooltip
-                formatter={(value) => `${value} threats`}
-                containerStyle={{ backgroundColor: "rgba(0,0,0,0.7)" }}
-                labelStyle={{ color: "#fff" }}
-                itemStyle={{ color: "#fff" }}
-              />
-              <Legend verticalAlign="top" height={36} />
-              <Line
-                type="monotone"
-                dataKey="count"
-                stroke="#3b82f6"
-                strokeWidth={2}
-                dot={false}
-                activeDot={{ r: 4 }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        )}
+    <div className={`rounded-3xl border shadow-2xl backdrop-blur-xl ${theme === "dark" ? "border-white/10 bg-[#0c0c0c]/80" : "border-gray-200 bg-white"}`}>
+      <div className={`flex items-center gap-3 border-b px-5 py-4 ${theme === "dark" ? "border-white/5 bg-white/5" : "border-gray-100 bg-gray-50"}`}>
+        <Activity className={`h-4 w-4 ${theme === "dark" ? "text-electric" : "text-cyan-600"}`} />
+        <span className={`text-sm font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Threat Distribution</span>
       </div>
-
-      {/* Pie Chart: Severity Distribution */}
-      <div className="bg-white/5 border border-white/10 rounded-xl p-4">
-        <h3 className="mb-4 text-xs font-medium text-white/50 uppercase tracking-wider">
-          Severity Distribution
-        </div>
-        {severityData.length === 0 ? (
-          <p className="text-white/50 text-center py-8">No threat data available</p>
-        ) : (
-          <ResponsiveContainer width="100%" height={250}>
+      <div className="grid gap-6 p-5 md:grid-cols-2">
+        <div>
+          <div className={`mb-3 text-xs font-medium uppercase tracking-wider ${theme === "dark" ? "text-white/40" : "text-gray-400"}`}>By Severity</div>
+          <ResponsiveContainer width="100%" height={180}>
             <PieChart>
-              <Pie
-                data={severityData}
-                dataKey="count"
-                nameKey="severity"
-                cx="50%"
-                cy="50%"
-                innerRadius={60}
-                outerRadius={80}
-                labelLine={{ 
-                  stroke: "#fff", 
-                  strokeWidth: 1, 
-                  fontSize: 12 
-                }}
-                label={{ 
-                  position: "inside", 
-                  fill: "#fff", 
-                  fontSize: 12 
-                }}
+              <Pie 
+                data={pie} 
+                dataKey="value" 
+                nameKey="name" 
+                cx="50%" 
+                cy="50%" 
+                innerRadius={50}
+                outerRadius={70}
+                paddingAngle={4}
               >
-                {severityData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[entry.severity]} />
+                {pie.map((entry, i) => (
+                  <Cell 
+                    key={i} 
+                    fill={SEVERITY_COLORS[entry.name] || "#888"} 
+                    stroke="transparent"
+                  />
                 ))}
               </Pie>
+              <Tooltip content={<CustomTooltip />} />
             </PieChart>
           </ResponsiveContainer>
-        )}
+        </div>
+        <div>
+          <div className={`mb-3 text-xs font-medium uppercase tracking-wider ${theme === "dark" ? "text-white/40" : "text-gray-400"}`}>Count Breakdown</div>
+          <ResponsiveContainer width="100%" height={180}>
+            <BarChart data={bar} margin={{ top: 5, right: 5, bottom: 5, left: 5 }}>
+              <XAxis 
+                dataKey="severity" 
+                tick={{ fontSize: 11, fill: theme === "dark" ? "#fff" : "#64748b" }} 
+                axisLine={{ stroke: theme === "dark" ? "rgba(255,255,255,0.1)" : "#e2e8f0" }}
+                tickLine={false}
+              />
+              <YAxis 
+                allowDecimals={false} 
+                tick={{ fontSize: 11, fill: theme === "dark" ? "#fff" : "#64748b" }} 
+                axisLine={{ stroke: theme === "dark" ? "rgba(255,255,255,0.1)" : "#e2e8f0" }}
+                tickLine={false}
+              />
+              <Tooltip content={<CustomTooltip />} />
+              <Bar 
+                dataKey="count" 
+                fill="#00c3ff" 
+                radius={[4, 4, 0, 0]}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </div>
     </div>
   );

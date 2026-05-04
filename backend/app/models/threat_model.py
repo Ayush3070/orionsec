@@ -1,29 +1,17 @@
 from pymongo import MongoClient
 from app.core.database import db
-from datetime import datetime
+from datetime import datetime, timedelta
 
-# Threat model for storing threat intelligence and detection results
 class ThreatModel:
     def __init__(self):
-        self.collection = db["threats"]
+        self.collection = db.threats
     
-    def create_indexes(self):
-        """Create indexes for efficient querying"""
-        # Compound index for fast lookups
-        self.collection.create_index([("indicator", 1), ("type", 1)], unique=True)
-        # Index for time-based queries
-        self.collection.create_index([("last_seen", -1)])
-        # Index for severity-based queries
-        self.collection.create_index([("severity", 1)])
+    async def create_indexes(self):
+        await self.collection.create_index([("indicator", 1), ("type", 1)], unique=True)
+        await self.collection.create_index([("last_seen", -1)])
+        await self.collection.create_index([("severity", 1)])
     
-    def save_threat(self, threat_data):
-        """
-        Save or update threat information
-        Args:
-            threat_data: dict with indicator, type, issue, severity, confidence, source
-        Returns:
-            dict: The saved threat document
-        """
+    async def save_threat(self, threat_data):
         indicator = threat_data.get("indicator")
         threat_type = threat_data.get("type")
         
@@ -32,7 +20,6 @@ class ThreatModel:
         
         now = datetime.utcnow()
         
-        # Prepare update document
         update_doc = {
             "$set": {
                 "issue": threat_data.get("issue", ""),
@@ -51,39 +38,24 @@ class ThreatModel:
             }
         }
         
-        # Upsert the threat
-        result = self.collection.update_one(
+        result = await self.collection.update_one(
             {"indicator": indicator, "type": threat_type},
             update_doc,
             upsert=True
         )
         
-        # Return the updated document
-        return self.collection.find_one({"indicator": indicator, "type": threat_type})
+        return await self.collection.find_one({"indicator": indicator, "type": threat_type})
     
-    def get_threat(self, indicator, threat_type):
-        """Get a specific threat by indicator and type"""
-        return self.collection.find_one({"indicator": indicator, "type": threat_type})
+    async def get_threat(self, indicator, threat_type):
+        return await self.collection.find_one({"indicator": indicator, "type": threat_type})
     
-    def get_threats(self, filters=None, limit=100, skip=0):
-        """
-        Get threats with optional filtering
-        Args:
-            filters: dict with filter criteria (severity, type, etc.)
-            limit: maximum number of results
-            skip: number of results to skip
-        Returns:
-            list: Matching threat documents
-        """
+    async def get_threats(self, filters=None, limit=100, skip=0):
         query = filters or {}
         cursor = self.collection.find(query).sort("last_seen", -1).skip(skip).limit(limit)
-        return list(cursor)
+        return await cursor.to_list(length=limit)
     
-    def get_threat_history(self, indicator, threat_type):
-        """Get historical data for a specific threat"""
-        # For now, we just return the current threat with its first/last seen times
-        # In a more advanced implementation, we might have a separate history collection
-        threat = self.get_threat(indicator, threat_type)
+    async def get_threat_history(self, indicator, threat_type):
+        threat = await self.get_threat(indicator, threat_type)
         if threat:
             return {
                 "indicator": threat["indicator"],
@@ -98,12 +70,9 @@ class ThreatModel:
             }
         return None
     
-    def delete_old_threats(self, days=30):
-        """Delete threats older than specified days"""
-        from datetime import datetime, timedelta
+    async def delete_old_threats(self, days=30):
         cutoff_date = datetime.utcnow() - timedelta(days=days)
-        result = self.collection.delete_many({"last_seen": {"$lt": cutoff_date}})
+        result = await self.collection.delete_many({"last_seen": {"$lt": cutoff_date}})
         return result.deleted_count
 
-# Create a singleton instance
 threat_model = ThreatModel()

@@ -1,60 +1,84 @@
 {
   "rules": [
     {
-      "id": "eval_usage",
-      "pattern": "\\\\beval\\\\s*\\\\([^\\\\)]*\\\\)",
-      "issue": "Use of eval() (code execution risk)",
+      "id": "RULE-001",
+      "pattern": "failed login|authentication failed|login failed",
+      "issue": "Failed login attempt detected",
+      "severity": "medium",
+      "weight": 5,
+      "description": "Detects failed login attempts in logs"
+    },
+    {
+      "id": "RULE-002",
+      "pattern": "unauthorized access|permission denied|access denied",
+      "issue": "Unauthorized access attempt",
       "severity": "high",
       "weight": 10,
-      "description": "Detects usage of eval() function which can lead to code injection"
+      "description": "Detects unauthorized access attempts"
     },
     {
-      "id": "hardcoded_api_key",
-      "pattern": "(?i)(api[_-]?key|token|secret|password|credential)[\\s]*[=:][\\s]*['\\\"][A-Za-z0-9_\\-\\+\\/=]{20,}['\\\"]",
-      "issue": "Possible hardcoded API key / token",
+      "id": "RULE-003",
+      "pattern": "sql injection|xpath injection|code injection",
+      "issue": "Possible injection attack",
       "severity": "high",
-      "weight": 9,
-      "description": "Detects hardcoded API keys, tokens, or secrets"
+      "weight": 15,
+      "description": "Detects potential injection attacks"
     },
     {
-      "id": "hardcoded_password",
-      "pattern": "(?i)password[\\s]*[=:][\\s]*['\\\"][^'\\\"]{8,}['\\\"]",
-      "issue": "Possible hardcoded password assignment",
+      "id": "RULE-004",
+      "pattern": "api[_-]?key|secret[_-]?key|access[_-]?token",
+      "issue": "API key or secret exposed",
+      "severity": "high",
+      "weight": 20,
+      "description": "Detects exposed API keys or secrets"
+    },
+    {
+      "id": "RULE-005",
+      "pattern": "root access|sudo:|su -",
+      "issue": "Privileged access detected",
       "severity": "medium",
-      "weight": 7,
-      "description": "Detects hardcoded passwords"
+      "weight": 8,
+      "description": "Detects privileged access usage"
     },
     {
-      "id": "failed_login_attempts",
-      "pattern": "(?i)failed.*login",
-      "issue": "Repeated 'failed login' event",
-      "severity": "low",
-      "weight": 3,
-      "description": "Detects failed login attempts"
+      "id": "RULE-006",
+      "pattern": "port scan|nmap|masscan",
+      "issue": "Port scanning activity",
+      "severity": "high",
+      "weight": 15,
+      "description": "Detects port scanning activities"
     },
     {
-      "id": "suspicious_ip",
-      "pattern": "(?i)suspicious.*ip",
-      "issue": "Suspicious IP detected",
-      "severity": "medium",
-      "weight": 6,
-      "description": "Detects suspicious IP addresses"
+      "id": "RULE-007",
+      "pattern": "ddos|denial of service|flood",
+      "issue": "Possible DDoS activity",
+      "severity": "high",
+      "weight": 20,
+      "description": "Detects potential DDoS attacks"
     },
     {
-      "id": "long_token",
-      "pattern": "[A-Za-z0-9_\\-]{32,}",
-      "issue": "Possible long token / opaque ID",
+      "id": "RULE-008",
+      "pattern": "malware|virus|trojan|ransomware",
+      "issue": "Malware reference detected",
+      "severity": "high",
+      "weight": 20,
+      "description": "Detects malware-related references"
+    },
+    {
+      "id": "RULE-009",
+      "pattern": "bruteforce|brute force|dictionary attack",
+      "issue": "Brute force attack detected",
+      "severity": "high",
+      "weight": 15,
+      "description": "Detects brute force attack patterns"
+    },
+    {
+      "id": "RULE-010",
+      "pattern": "suspicious|anomaly|unusual",
+      "issue": "Suspicious activity detected",
       "severity": "medium",
       "weight": 5,
-      "description": "Detects long tokens that might be API keys or session tokens"
-    },
-    {
-      "id": "hex_string",
-      "pattern": "[A-Fa-f0-9]{32,}",
-      "issue": "Possible hex-encoded secret",
-      "severity": "medium",
-      "weight": 5,
-      "description": "Detects long hexadecimal strings that might be hashes or keys"
+      "description": "Detects suspicious or anomalous activities"
     }
   ],
   "thresholds": {

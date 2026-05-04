@@ -166,6 +166,10 @@ open http://localhost:5173
 
 ### 🚀 Quick Start
 
+**☁️ Free Cloud Deploy**: See [DEPLOY_NOW.md](DEPLOY_NOW.md) → Live in 10 mins ($0)
+
+**💻 Local Setup**:
+
 ---
 
 ### Option 2: Manual Setup (For Developers)
